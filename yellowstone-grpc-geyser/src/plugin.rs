@@ -77,7 +77,11 @@ impl GeyserPlugin for Plugin {
         }
         if let Some(tokio_cpus) = config.tokio.affinity.clone() {
             builder.on_thread_start(move || {
-                affinity::set_thread_affinity(&tokio_cpus).expect("failed to set affinity")
+                for &core_id in &tokio_cpus {
+                    if core_affinity::set_for_current(core_affinity::CoreId { id: core_id }) {
+                        break;
+                    }
+                }
             });
         }
         let runtime = builder

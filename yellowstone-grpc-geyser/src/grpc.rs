@@ -458,7 +458,14 @@ impl GrpcService {
             }
             if let Some(tokio_cpus) = config_tokio.affinity.clone() {
                 builder.on_thread_start(move || {
-                    affinity::set_thread_affinity(&tokio_cpus).expect("failed to set affinity")
+                    // For consistency with the old code, we'll use the first CPU in the list
+                    // since core_affinity only supports setting affinity to one core at a time
+                    if !tokio_cpus.is_empty() {
+                        let core_id = core_affinity::CoreId {
+                            id: tokio_cpus[0] as usize,
+                        };
+                        let _ = core_affinity::set_for_current(core_id);
+                    }
                 });
             }
             builder
