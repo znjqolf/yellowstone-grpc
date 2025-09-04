@@ -208,6 +208,10 @@ pub struct ConfigGrpc {
     pub server_initial_connection_window_size: Option<u32>,
     #[serde(default)]
     pub server_initial_stream_window_size: Option<u32>,
+    #[serde(default)]
+    pub processed_messages_max: Option<usize>,
+    #[serde(default)]
+    pub processed_messages_sleep: Option<u64>,
 }
 
 impl ConfigGrpc {

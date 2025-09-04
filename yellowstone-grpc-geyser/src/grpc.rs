@@ -508,6 +508,8 @@ impl GrpcService {
                     replay_stored_slots_rx,
                     replay_first_available_slot,
                     config.replay_stored_slots,
+                    config.processed_messages_max,
+                    config.processed_messages_sleep,
                 ));
         });
 
@@ -548,9 +550,11 @@ impl GrpcService {
         replay_stored_slots_rx: Option<mpsc::Receiver<ReplayStoredSlotsRequest>>,
         replay_first_available_slot: Option<Arc<AtomicU64>>,
         replay_stored_slots: u64,
+        processed_messages_max: Option<usize>,
+        processed_messages_sleep: Option<u64>,
     ) {
-        const PROCESSED_MESSAGES_MAX: usize = 1;
-        const PROCESSED_MESSAGES_SLEEP: Duration = Duration::from_millis(10);
+        const PROCESSED_MESSAGES_MAX: usize = processed_messages_max.unwrap_or(1);
+        const PROCESSED_MESSAGES_SLEEP: Duration = Duration::from_millis(processed_messages_sleep.unwrap_or(10));
 
         let mut msgid_gen = MessageId::default();
         let mut messages: BTreeMap<u64, SlotMessages> = Default::default();
