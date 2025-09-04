@@ -549,7 +549,7 @@ impl GrpcService {
         replay_first_available_slot: Option<Arc<AtomicU64>>,
         replay_stored_slots: u64,
     ) {
-        const PROCESSED_MESSAGES_MAX: usize = 31;
+        const PROCESSED_MESSAGES_MAX: usize = 1;
         const PROCESSED_MESSAGES_SLEEP: Duration = Duration::from_millis(10);
 
         let mut msgid_gen = MessageId::default();
