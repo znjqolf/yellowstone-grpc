@@ -553,8 +553,8 @@ impl GrpcService {
         processed_messages_max: Option<usize>,
         processed_messages_sleep: Option<u64>,
     ) {
-        const PROCESSED_MESSAGES_MAX: usize = processed_messages_max.unwrap_or(1);
-        const PROCESSED_MESSAGES_SLEEP: Duration = Duration::from_millis(processed_messages_sleep.unwrap_or(10));
+        let PROCESSED_MESSAGES_MAX: usize = processed_messages_max.unwrap_or(1);
+        let PROCESSED_MESSAGES_SLEEP: Duration = Duration::from_millis(processed_messages_sleep.unwrap_or(10));
 
         let mut msgid_gen = MessageId::default();
         let mut messages: BTreeMap<u64, SlotMessages> = Default::default();
